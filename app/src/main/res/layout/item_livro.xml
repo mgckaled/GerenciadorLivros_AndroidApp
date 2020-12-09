@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:text="Autor do Livro"
         android:layout_toEndOf="@id/ic_livro"
-        android:textSize="17sp"
+        android:textSize="15sp"
         android:layout_below="@id/txtTitulo" />
 
       <TextView

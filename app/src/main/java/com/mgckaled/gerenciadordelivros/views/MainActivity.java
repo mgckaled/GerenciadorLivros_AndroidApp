@@ -11,16 +11,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.mgckaled.gerenciadordelivros.R;
 import com.mgckaled.gerenciadordelivros.adapter.LivroAdapter;
 import com.mgckaled.gerenciadordelivros.data.LivroDAO;
+import com.mgckaled.gerenciadordelivros.dialogs.DeleteDialog;
 import com.mgckaled.gerenciadordelivros.dominio.Livro;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements LivroAdapter.OnLivroListener, DeleteDialog.OnDeleteListener {
 
     private LivroDAO livroDAO;
     LivroAdapter livroAdapter;
@@ -35,8 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Setup Recyclerview -> atribuir layout linear
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
 
         // Adicionar objetos Livros na ArrayList de Lista de Livros.
         // Informar todos os atributos declarados na classe Livro
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Definir o layout de cada linha da RecyclerView e quais são seus respectivos dados
         // Para isso é necessário criar um classe com função adaptativa
-        livroAdapter = new LivroAdapter(listaLivros, this);
+        livroAdapter = new LivroAdapter(listaLivros, this, this);
 
         recyclerView.setAdapter(livroAdapter);
 
@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
@@ -97,7 +96,9 @@ public class MainActivity extends AppCompatActivity {
         // Se for true, atualizar lista de livros...
         if (requestCode == 100  && resultCode == RESULT_OK) {
             atualizaListaLivros();
-
+        }
+        if (requestCode == 101  && resultCode == RESULT_OK) {
+            atualizaListaLivros();
         }
     }
 
@@ -105,5 +106,35 @@ public class MainActivity extends AppCompatActivity {
         List<Livro> livros = livroDAO.list();
         livroAdapter.setItens(livros);
         livroAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onLivroClick(int posicao) {
+
+        Intent intent = new Intent(getApplicationContext(), EditarLivroActivity.class);
+        intent.putExtra("livro", livroAdapter.getItem(posicao));
+        startActivityForResult(intent, 101);
+
+    }
+
+    @Override
+    public void onLivroLongClick(int posicao) {
+
+        Livro livro = livroAdapter.getItem(posicao);
+
+        DeleteDialog dialog = new DeleteDialog();
+        dialog.setLivro(livro);
+        dialog.show(getSupportFragmentManager(), "deleteDialog");
+
+    }
+
+    @Override
+    public void onDelete(Livro livro) {
+
+        livroDAO.delete(livro);
+        atualizaListaLivros();
+
+        Toast.makeText(this, "Livro excluído com sucesso!", Toast.LENGTH_SHORT).show();
+
     }
 }

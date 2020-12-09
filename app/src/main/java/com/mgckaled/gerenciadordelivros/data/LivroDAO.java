@@ -103,7 +103,7 @@ public class LivroDAO {
 
         db.update(LivroContract.TABLE_NAME,
                 values,
-                LivroContract.Columns._ID + "?",
+                LivroContract.Columns._ID + "=?",
                 new String[] {String.valueOf(livro.getId())}
             );
     }
@@ -111,7 +111,7 @@ public class LivroDAO {
     public void delete(Livro livro) {
 
         db.delete(LivroContract.TABLE_NAME,
-                LivroContract.Columns._ID + "?",
+                LivroContract.Columns._ID + "=?",
                 new String[] {String.valueOf(livro.getId())}
         );
     }
