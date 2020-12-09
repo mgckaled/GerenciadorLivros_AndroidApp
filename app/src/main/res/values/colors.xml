@@ -8,4 +8,13 @@
   <color name="black">#FF000000</color>
   <color name="white">#FFFFFFFF</color>
   <color name="backgroud_cardview">#FFFDE7</color>
+
+  <color name="color_pallet_1">#5CACF2</color>
+  <color name="color_pallet_2">#F2E30F</color>
+  <color name="color_pallet_3">#F2CD13</color>
+  <color name="color_pallet_4">#F2F2F2</color>
+  <color name="color_pallet_5">#0D0D0D</color>
+  <color name="btn_cancel">#E36A8A</color>
+  <color name="color_book">#1C8C8C</color>
+
 </resources>
